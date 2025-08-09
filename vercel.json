@@ -1,14 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
+  "buildCommand": "node vercel-build.js",
+  "outputDirectory": "dist/public",
+  "framework": null,
+  "installCommand": "npm install",
   "routes": [
     {
       "handle": "filesystem"
