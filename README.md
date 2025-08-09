@@ -1,190 +1,113 @@
-# Circla-Chat-App
-Circla Chat App
+# Circla Chat App
 
-A WhatsApp-like chat application built with React, Next.js, and Supabase
+A modern, real-time chat application with Supabase authentication and WhatsApp-inspired UI.
 
-Features
-Real-time messaging with typing indicators
+## Features
 
-Secure authentication via phone/email with OTP
+- 🔐 **Supabase Authentication** - Email magic links and phone OTP
+- 💬 **Real-time Messaging** - WebSocket-powered chat
+- 📱 **Responsive Design** - Mobile-first with modern UI
+- 🎨 **WhatsApp-inspired Interface** - Familiar and intuitive
+- ☁️ **Production Ready** - Configured for Vercel deployment
 
-Media sharing (images, documents)
+## Technology Stack
 
-Group chats with admin controls
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS
+- **Backend**: Express.js, WebSocket
+- **Authentication**: Supabase Auth
+- **Database**: PostgreSQL (Supabase)
+- **Deployment**: Vercel
 
-Online status indicators
+## Quick Start
 
-End-to-end encryption for messages
+### Development
 
-Responsive design for all devices
+1. Clone the repository: `git clone https://github.com/fanoskasim/Circla-Chat-App.git`
+2. Install dependencies: `npm install`
+3. Set up environment variables (see below)
+4. Start development server: `npm run dev`
+5. Visit `http://localhost:5000`
 
-Push notifications for new messages
+### Environment Variables
 
-Technology Stack
-Frontend
+Create `.env.local` with:
 
-React.js with Next.js framework
+```bash
+# Supabase Configuration
+VITE_SUPABASE_URL=https://cdcippxqcfvjmemfqsmj.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-Tailwind CSS for styling
+# For Vercel deployment, also add:
+NEXT_PUBLIC_SUPABASE_URL=https://cdcippxqcfvjmemfqsmj.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-Realtime communication via Supabase
+## Deployment to Vercel
 
-Backend
+### 1. Environment Variables in Vercel
 
-Supabase (PostgreSQL database, Auth, Storage)
+Add these environment variables in your Vercel dashboard:
 
-Row Level Security for data protection
+```
+NEXT_PUBLIC_SUPABASE_URL=https://cdcippxqcfvjmemfqsmj.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+VITE_SUPABASE_URL=https://cdcippxqcfvjmemfqsmj.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
 
-Postgres functions for realtime updates
+### 2. Supabase Configuration
 
-Infrastructure
+Update your Supabase project settings:
 
-Replit for deployment and hosting
+**Authentication → URL Configuration:**
+- Site URL: `https://your-app-name.vercel.app`
+- Redirect URLs: `https://your-app-name.vercel.app/auth/callback`
 
-Supabase for backend services
+### 3. Deploy
 
-Setup Instructions
-1. Create Repository
-bash
-git clone https://github.com/yourname/circla-chat-app
-cd circla-chat-app
-2. Set Up Supabase
-Create account at supabase.io
+1. Push code to GitHub
+2. Connect repository to Vercel
+3. Deploy automatically
 
-Create new project (note project URL and anon key)
+## Authentication Setup
 
-Run database setup:
+### Email Authentication (Ready)
+- Magic links work out of the box
+- Update redirect URLs in Supabase for production
 
-sql
--- Create tables
-CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  username TEXT NOT NULL,
-  avatar_url TEXT,
-  online BOOLEAN DEFAULT false,
-  last_seen TIMESTAMPTZ
-);
+### Phone Authentication (Requires Twilio Setup)
+- Configure Twilio in Supabase Auth settings
+- Add Twilio credentials (Account SID, Auth Token, Message Service SID)
+- Test number available: +1 959 335 0372
 
-CREATE TABLE messages (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  sender_id UUID REFERENCES users(id) NOT NULL,
-  receiver_id UUID REFERENCES users(id),
-  group_id UUID REFERENCES groups(id),
-  content TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  status TEXT DEFAULT 'sent' -- sent/delivered/read
-);
+## Testing
 
-CREATE TABLE groups (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
-  created_by UUID REFERENCES users(id) NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+Visit `/test` route to verify:
+- Supabase connection
+- Email authentication
+- Phone authentication (after Twilio setup)
+- User session management
 
--- Enable realtime
-ALTER TABLE messages REPLICA IDENTITY FULL;
-CREATE PUBLICATION supabase_realtime FOR TABLE messages;
-3. Configure Environment
-Create .env.local file:
+## Project Structure
 
-env
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-4. Install Dependencies
-bash
-npm install
-5. Run Development Server
-bash
-npm run dev
-Replit Deployment Command
-Run this single command in Replit shell to deploy:
+```
+├── client/               # React frontend
+│   ├── src/
+│   │   ├── components/   # UI components
+│   │   ├── hooks/        # Custom hooks
+│   │   ├── lib/          # Utilities and configuration
+│   │   ├── pages/        # Route components
+│   │   └── providers/    # Context providers
+├── server/               # Express backend
+├── shared/               # Shared types and schemas
+├── vercel.json          # Vercel deployment config
+└── SUPABASE_SETUP.md    # Detailed setup guide
+```
 
-bash
-git clone https://github.com/fanoskasim/circla-chat-app && cd circla-chat-app && \
-echo "NEXT_PUBLIC_SUPABASE_URL=$YOUR_SUPABASE_URL" > .env.local && \
-echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$YOUR_SUPABASE_KEY" >> .env.local && \
-npm install && npm run build && npm run start
-Replace placeholders:
+## Support
 
-$YOUR_SUPABASE_URL - Your Supabase project URL
+For detailed setup instructions, see `SUPABASE_SETUP.md`.
 
-$YOUR_SUPABASE_KEY - Your Supabase anon key
+## License
 
-Production Configuration
-Enable Row Level Security in Supabase for all tables
-
-Configure Authentication Providers in Supabase dashboard
-
-Set Up Storage for media files in Supabase
-
-Enable SSL in Supabase settings
-
-Configure Custom Domain in Replit
-
-Project Structure
-text
-circla-chat-app/
-├── components/
-│   ├── chat/
-│   │   ├── ChatWindow.js
-│   │   ├── MessageBubble.js
-│   │   └── TypingIndicator.js
-│   ├── contacts/
-│   │   ├── ContactList.js
-│   │   └── ContactItem.js
-│   ├── groups/
-│   │   ├── GroupCreator.js
-│   │   └── GroupSettings.js
-│   └── ui/
-│       ├── EncryptionBadge.js
-│       └── OnlineIndicator.js
-├── lib/
-│   ├── supabaseClient.js
-│   └── encryption.js
-├── pages/
-│   ├── index.js (main chat)
-│   ├── auth.js
-│   └── groups/
-│       └── [groupId].js
-├── public/
-│   └── assets/
-├── styles/
-│   └── globals.css
-├── .env.local
-└── package.json
-Security Features
-End-to-end message encryption using WebCrypto API
-
-Row Level Security in Supabase
-
-JWT token authentication
-
-Rate limiting on authentication endpoints
-
-Input sanitization for all user-generated content
-
-Automatic session timeout after 24 hours
-
-Contributing
-Fork the repository
-
-Create feature branch (git checkout -b feature/your-feature)
-
-Commit changes (git commit -am 'Add feature')
-
-Push to branch (git push origin feature/your-feature)
-
-Open pull request
-
-License
-Circla is MIT licensed.
-
-Production Checklist
- Enable Supabase Realtime
- Configure SMS provider (Twilio) for OTP
- Set up backup retention policies
- Enable error tracking (Sentry)
- Implement rate limiting
- Add monitoring (Logflare)
+MIT License
