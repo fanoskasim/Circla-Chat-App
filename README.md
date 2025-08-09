@@ -46,7 +46,7 @@ Supabase for backend services
 Setup Instructions
 1. Create Repository
 bash
-git clone https://github.com/fanoskasim/circla-chat-app
+git clone https://github.com/yourname/circla-chat-app
 cd circla-chat-app
 2. Set Up Supabase
 Create account at supabase.io
@@ -102,7 +102,7 @@ Replit Deployment Command
 Run this single command in Replit shell to deploy:
 
 bash
-git clone https://github.com/your-username/circla-chat-app && cd circla-chat-app && \
+git clone https://github.com/fanoskasim/circla-chat-app && cd circla-chat-app && \
 echo "NEXT_PUBLIC_SUPABASE_URL=$YOUR_SUPABASE_URL" > .env.local && \
 echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$YOUR_SUPABASE_KEY" >> .env.local && \
 npm install && npm run build && npm run start
