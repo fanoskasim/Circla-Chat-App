@@ -1,11 +1,11 @@
 // Minimal server stub; not used in static deployment. Kept to satisfy the build script.
+import http from "node:http";
+
 export function noop() {
   return "ok";
 }
 
 if (process.env.NODE_ENV === "production" && process.env.RUN_SERVER === "true") {
-  // Optional: start a simple server only if explicitly requested
-  const http = await import("node:http");
   const server = http.createServer((_req, res) => {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/plain");
